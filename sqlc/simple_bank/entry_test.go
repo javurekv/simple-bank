@@ -13,7 +13,8 @@ func createRandomEntry(t *testing.T, accountID *int64) Entry {
 	if accountID != nil {
 		id = *accountID
 	} else {
-		id = util.RandomInt(1, 100) // fallback if nil
+		account := createRandomAccount(t)
+		id = account.ID
 	}
 
 	arg := CreateEntryParams{
@@ -33,6 +34,7 @@ func createRandomEntry(t *testing.T, accountID *int64) Entry {
 
 	return entry
 }
+
 func TestCreateEntries(t *testing.T) {
 	createRandomEntry(t, nil)
 }
