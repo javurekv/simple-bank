@@ -17,7 +17,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: secret
           POSTGRES_USER: root
-          POSTGRES_DB: db
+          POSTGRES_DB: simple_bank
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -29,7 +29,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Go
-      uses: actions/setup-db@v4
+      uses: actions/setup-go@v4
       with:
         go-version: '1.23.8'
 
