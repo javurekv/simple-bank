@@ -9,14 +9,16 @@ import (
 )
 
 func createRandomTransfer(t *testing.T, from *int64, to *int64) Transfer {
-	var fromId int64
-	var toId int64
+	var fromId, toId int64
+
 	if from != nil && to != nil {
 		fromId = *from
 		toId = *to
 	} else {
-		fromId = util.RandomInt(5, 11)
-		toId = util.RandomInt(1, 6)
+		fromAccount := createRandomAccount(t)
+		toAccount := createRandomAccount(t)
+		fromId = fromAccount.ID
+		toId = toAccount.ID
 	}
 
 	arg := CreateTransferParams{
@@ -26,7 +28,6 @@ func createRandomTransfer(t *testing.T, from *int64, to *int64) Transfer {
 	}
 
 	transfer, err := testStore.CreateTransfer(context.Background(), arg)
-
 	require.NoError(t, err)
 	require.NotEmpty(t, transfer)
 
@@ -34,8 +35,8 @@ func createRandomTransfer(t *testing.T, from *int64, to *int64) Transfer {
 	require.Equal(t, arg.ToAccountID, transfer.ToAccountID)
 	require.Equal(t, arg.Amount, transfer.Amount)
 
-	require.NotZero(t, transfer.CreatedAt)
 	require.NotZero(t, transfer.ID)
+	require.NotZero(t, transfer.CreatedAt)
 
 	return transfer
 }
