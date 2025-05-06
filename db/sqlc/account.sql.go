@@ -3,7 +3,7 @@
 //   sqlc v1.29.0
 // source: account.sql
 
-package simple_bank
+package db
 
 import (
 	"context"

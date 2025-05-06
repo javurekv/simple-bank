@@ -1,4 +1,4 @@
-package simple_bank
+package db
 
 import (
 	"context"

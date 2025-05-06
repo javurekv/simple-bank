@@ -22,7 +22,7 @@ rollback:
 
 .PHONY: sqlc
 sqlc:
-	cd sqlc && $(SQLC) generate
+	$(SQLC) generate
 
 .PHONY: test
 test:
