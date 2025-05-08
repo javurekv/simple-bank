@@ -10,7 +10,7 @@ import (
 )
 
 var testPool *pgxpool.Pool
-var testStore *Store
+var testStore Store
 
 func TestMain(m *testing.M) {
 	var err error

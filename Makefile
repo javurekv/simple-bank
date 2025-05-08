@@ -1,4 +1,5 @@
 SQLC := /Users/vitaliiiavurek/go/bin/sqlc
+MOCKGEN = /Users/vitaliiiavurek/go/bin/mockgen
 
 .PHONY: postgres
 postgres:
@@ -31,3 +32,7 @@ test:
 .PHONY: server
 server:
 	go run main.go
+
+.PHONY: mock
+mock:
+	$(MOCKGEN) -package mockdb -destination=db/mock/mock_store.go simple_bank.sqlc.dev/app/db/sqlc Store
