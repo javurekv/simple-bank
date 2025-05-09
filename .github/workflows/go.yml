@@ -42,13 +42,14 @@ jobs:
     - name: Run migration
       run: make migrate
 
+    - name: Create mock directory
+      run: mkdir -p app/db/mock
+
     - name: Install mockgen
       run: go install go.uber.org/mock/mockgen@v0.5.2
 
     - name: Generate mocks
-      run: |
-        mockgen -package=mockdb simple_bank.sqlc.dev/app/db/sqlc Store > app/db/mock/store.go
-
+      run: mockgen -package=mockdb simple_bank.sqlc.dev/app/db/sqlc Store > app/db/mock/store.go
 
     - name: Test
       run: make test
