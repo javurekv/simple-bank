@@ -15,11 +15,19 @@ dropdb:
 
 .PHONY: migrate
 migrate:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migrations -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" up
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" up
+
+.PHONY: migrate1
+migrate1:
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" up 1
 
 .PHONY: rollback
 rollback:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migrations -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" down
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" down
+
+.PHONY: rollback1
+rollback1:
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" down 1
 
 .PHONY: sqlc
 sqlc:

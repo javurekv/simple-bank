@@ -1,0 +1,99 @@
+package db
+
+import (
+	"context"
+	"github.com/stretchr/testify/require"
+	"simple_bank.sqlc.dev/app/util"
+	"testing"
+	"time"
+)
+
+func createRandomUser(t *testing.T) User {
+	arg := CreateUserParams{
+		Username:       util.RandomOwner(),
+		HashedPassword: "secret",
+		FullName:       util.RandomOwner(),
+		Email:          util.RandomEmail(),
+	}
+
+	user, err := testStore.CreateUser(context.Background(), arg)
+	require.NoError(t, err)
+	require.NotEmpty(t, user)
+
+	require.Equal(t, arg.Username, user.Username)
+	require.Equal(t, arg.HashedPassword, user.HashedPassword)
+	require.Equal(t, arg.FullName, user.FullName)
+	require.Equal(t, arg.Email, user.Email)
+
+	require.True(t, user.PasswordChangedAt.IsZero())
+	require.NotZero(t, user.CreatedAt)
+
+	return user
+}
+
+func TestCreateUser(t *testing.T) {
+	createRandomUser(t)
+}
+
+func TestGetUser(t *testing.T) {
+	user1 := createRandomUser(t)
+	user2, err := testStore.GetUser(context.Background(), user1.Username)
+	require.NoError(t, err)
+	require.NotEmpty(t, user2)
+
+	require.Equal(t, user1.Username, user2.Username)
+	require.Equal(t, user1.HashedPassword, user2.HashedPassword)
+	require.Equal(t, user1.FullName, user2.FullName)
+	require.Equal(t, user1.Email, user2.Email)
+	require.WithinDuration(t, user1.CreatedAt, user2.CreatedAt, time.Second)
+	require.WithinDuration(t, user1.PasswordChangedAt, user2.PasswordChangedAt, time.Second)
+}
+
+//func TestUpdateUser(t *testing.T) {
+//	account1 := createRandomAccount(t)
+//
+//	arg := UpdateUserParams{
+//		ID:      account1.ID,
+//		Balance: util.RandomMoney(),
+//	}
+//
+//	account2, err := testStore.UpdateAccount(context.Background(), arg)
+//	require.NoError(t, err)
+//	require.NotEmpty(t, account2)
+//
+//	require.Equal(t, account1.ID, account2.ID)
+//	require.Equal(t, account1.Owner, account2.Owner)
+//	require.Equal(t, arg.Balance, account2.Balance)
+//	require.Equal(t, account1.Currency, account2.Currency)
+//	require.WithinDuration(t, account1.CreatedAt, account2.CreatedAt, time.Second)
+//}
+//
+//func TestDeleteUser(t *testing.T) {
+//	account1 := createRandomAccount(t)
+//	err := testStore.DeleteAccount(context.Background(), account1.ID)
+//	require.NoError(t, err)
+//
+//	account2, err := testStore.GetAccount(context.Background(), account1.ID)
+//	require.Error(t, err)
+//	require.ErrorIs(t, err, pgx.ErrNoRows)
+//	require.Empty(t, account2)
+//}
+//
+//func TestListUsers(t *testing.T) {
+//	for i := 0; i < 10; i++ {
+//		createRandomAccount(t)
+//	}
+//
+//	arg := ListAccountParams{
+//		Limit:  5,
+//		Offset: 5,
+//	}
+//
+//	accounts, err := testStore.ListAccount(context.Background(), arg)
+//	require.NoError(t, err)
+//	require.Len(t, accounts, 5)
+//
+//	for _, account := range accounts {
+//		require.NotEmpty(t, account)
+//	}
+//}

@@ -45,11 +45,5 @@ jobs:
     - name: Create mock directory
       run: mkdir -p app/db/mock
 
-    - name: Install mockgen
-      run: go install go.uber.org/mock/mockgen@v0.5.2
-
-    - name: Generate mocks
-      run: mockgen -package mockdb -destination=db/mock/mock_store.go simple_bank.sqlc.dev/app/db/sqlc Store
-
     - name: Test
       run: make test
