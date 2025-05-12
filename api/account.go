@@ -2,8 +2,9 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"github.com/gin-gonic/gin"
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgconn"
 	"log"
 	"net/http"
 	db "simple_bank.sqlc.dev/app/db/sqlc"
@@ -29,12 +30,12 @@ func (server *Server) createAccount(ctx *gin.Context) {
 
 	account, err := server.store.CreateAccount(ctx, arg)
 	if err != nil {
-		log.Printf("error creating account: %v", err)
-		if pqErr, ok := err.(*pq.Error); ok {
-			log.Println("Postgres error code:", pqErr.Code.Name())
-			log.Println("Postgres constraint:", pqErr.Constraint)
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			log.Println("Postgres error code:", pgErr.Code)
+			log.Println("Postgres constraint:", pgErr.ConstraintName)
 
-			switch pqErr.Code.Name() {
+			switch pgErr.Code {
 			case "foreign_key_violation", "unique_violation":
 				ctx.JSON(http.StatusForbidden, errorResponse(err))
 				return
