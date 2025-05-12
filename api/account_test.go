@@ -101,7 +101,7 @@ func TestGetAccount(t *testing.T) {
 
 func randomAccount() db.Account {
 	return db.Account{
-		ID:       util.RandomInt(1, 1000),
+		ID:       util.RandomInt(1, 100),
 		Owner:    util.RandomOwner(),
 		Balance:  util.RandomMoney(),
 		Currency: util.RandomCurrency(),
