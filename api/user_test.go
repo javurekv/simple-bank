@@ -10,6 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -222,6 +223,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(user, nil)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				log.Println("record error:", recorder)
 				require.Equal(t, http.StatusOK, recorder.Code)
 			},
 		},
@@ -238,6 +240,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(db.User{}, sql.ErrNoRows)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				log.Println("record error:", recorder)
 				require.Equal(t, http.StatusNotFound, recorder.Code)
 			},
 		},
@@ -254,6 +257,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(user, nil)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				log.Println("record error:", recorder)
 				require.Equal(t, http.StatusUnauthorized, recorder.Code)
 			},
 		},
@@ -270,6 +274,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Return(db.User{}, sql.ErrConnDone)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				log.Println("record error:", recorder)
 				require.Equal(t, http.StatusInternalServerError, recorder.Code)
 			},
 		},
@@ -285,6 +290,7 @@ func TestLoginUserAPI(t *testing.T) {
 					Times(0)
 			},
 			checkResponse: func(recorder *httptest.ResponseRecorder) {
+				log.Println("record error:", recorder)
 				require.Equal(t, http.StatusBadRequest, recorder.Code)
 			},
 		},
