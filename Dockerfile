@@ -7,11 +7,12 @@ RUN apk add curl
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz | tar xvz
 
 #Run stage
+ARG APP_ENV_FILE
 FROM alpine:3.21
 WORKDIR /app
 COPY --from=builder /app/main .
 COPY --from=builder /app/migrate ./migrate
-COPY app.env .
+COPY ${APP_ENV_FILE:-app.env} ./app.env
 COPY start.sh .
 COPY wait-for.sh .
 COPY db/migration ./migration
