@@ -22,21 +22,9 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::621486623993:role/github-actions-ecr-role
           aws-region: eu-north-1
-      - name: Load secrets and save to app.env
-        run: |
-          set -e
-          SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text)
-          echo "🔎 SecretString = $SECRET_JSON"
-          echo "$SECRET_JSON" | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
 
-      - name: Debug list files
-        run: |
-          echo "ℹ️ Поточна директорія:"
-          pwd
-          echo "📁 Вміст:"
-          ls -la
-          echo "📄 app.env:"
-          cat app.env
+      - name: Load secrets and save to app.env
+        run: aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
 
       - name: Login to Amazon ECR
         id: login-ecr
