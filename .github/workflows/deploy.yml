@@ -28,11 +28,14 @@ jobs:
            --query SecretString --output text \
          | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
 
-      - name: 🧪 Print app.env for debug
+      - name: Debug list files
         run: |
-           echo "================== app.env =================="
-           cat app.env
-           echo "============================================="
+          echo "ℹ️ Поточна директорія:"
+          pwd
+          echo "📁 Вміст:"
+          ls -la
+          echo "📄 app.env:"
+          cat app.env
 
       - name: Login to Amazon ECR
         id: login-ecr
