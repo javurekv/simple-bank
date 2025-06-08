@@ -9,7 +9,6 @@ RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.18.3/
 # Run stage
 FROM alpine:3.21
 WORKDIR /app
-
 ARG APP_ENV_FILE
 COPY ${APP_ENV_FILE:-app.env} ./app.env
 
