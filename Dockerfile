@@ -6,7 +6,6 @@ RUN go build -o main main.go
 RUN apk add --no-cache curl
 RUN curl -L -o migrate.tar.gz https://github.com/golang-migrate/migrate/releases/download/v4.18.3/migrate.linux-amd64.tar.gz && \
     tar -xzf migrate.tar.gz && \
-    mv migrate.linux-amd64 migrate && \
     chmod +x migrate && \
     rm migrate.tar.gz
 
