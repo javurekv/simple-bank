@@ -53,6 +53,9 @@ jobs:
           mkdir -p $HOME/.kube
           aws eks update-kubeconfig --name simple-cluster --region eu-north-1 --kubeconfig $HOME/.kube/config\
 
+      - name: Inspect generated kubeconfig
+        run: cat $HOME/.kube/config
+
       - name: Debug kubeconfig
         run: |
           echo "=== kubectl config view ==="
