@@ -69,7 +69,7 @@ jobs:
         env:
           KUBECONFIG: $HOME/.kube/config
         run: |
-          kubectl apply -f eks/aws-auth.yaml
+          kubectl apply --kubeconfig $HOME/.kube/config -f eks/aws-auth.yaml
           kubectl apply -f eks/deployment.yaml
           kubectl apply -f eks/service.yaml
           kubectl apply -f eks/issuer.yaml
