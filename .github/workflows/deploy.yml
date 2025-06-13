@@ -48,7 +48,16 @@ jobs:
       - name: Update kube config
         run: |
           mkdir -p $HOME/.kube
-          aws eks update-kubeconfig --name simple-cluster --region eu-north-1 --kubeconfig $HOME/.kube/config
+          aws eks update-kubeconfig --name simple-cluster --region eu-north-1 --kubeconfig $HOME/.kube/config\
+
+      - name: Debug kubeconfig
+        run: |
+          echo "=== kubectl config view ==="
+          kubectl config view
+          echo "=== kubectl get nodes ==="
+          kubectl get nodes || echo "Could not access cluster"
+        env:
+          KUBECONFIG: $HOME/.kube/config
 
       - name: Deploy image to Amazon EKS
         env:
