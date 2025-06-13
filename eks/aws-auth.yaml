@@ -6,10 +6,14 @@ metadata:
 data:
   mapRoles: |
     - groups:
-      - system:bootstrappers
-      - system:nodes
+        - system:bootstrappers
+        - system:nodes
       rolearn: arn:aws:iam::621486623993:role/eksctl-simple-cluster-nodegroup-st-NodeInstanceRole-qpYoTUgo6Zhq
       username: system:node:{{EC2PrivateDNSName}}
+    - groups:
+        - system:masters
+      rolearn: arn:aws:iam::621486623993:role/github-actions-ecr-role
+      username: github-actions
   mapUsers: |
     - userarn: arn:aws:iam::621486623993:user/github-ci
       username: github-ci
