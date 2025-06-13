@@ -46,9 +46,13 @@ jobs:
           docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
 
       - name: Update kube config
-        run: aws eks update-kubeconfig --name simple-cluster --region eu-north-1
+        run: |
+          mkdir -p $HOME/.kube
+          aws eks update-kubeconfig --name simple-cluster --region eu-north-1 --kubeconfig $HOME/.kube/config
 
       - name: Deploy image to Amazon EKS
+        env:
+          KUBECONFIG: $HOME/.kube/config
         run: |
           kubectl apply -f eks/aws-auth.yaml
           kubectl apply -f eks/deployment.yaml
