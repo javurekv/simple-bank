@@ -56,6 +56,15 @@ jobs:
       - name: Inspect generated kubeconfig
         run: cat $HOME/.kube/config
 
+      - name: Test aws eks get-token manually
+        run: |
+          aws eks get-token --cluster-name simple-cluster
+        env:
+          AWS_REGION: eu-north-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+
       - name: Debug kubeconfig
         run: |
           echo "=== kubectl config view ==="
