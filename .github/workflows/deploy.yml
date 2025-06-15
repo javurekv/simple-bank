@@ -65,7 +65,7 @@ jobs:
 
       - name: Test aws eks get-token manually
         run: |
-          aws eks get-token --cluster-name simple-cluster
+          aws eks get-token --cluster-name simple-cluster --region eu-north-1
         env:
           AWS_REGION: eu-north-1
           AWS_DEFAULT_REGION: eu-north-1
