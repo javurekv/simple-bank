@@ -24,6 +24,7 @@ jobs:
         id: install
 
       - name: Configure AWS credentials
+        id: aws-creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::621486623993:role/github-actions-ecr-role
