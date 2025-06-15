@@ -11,10 +11,11 @@ permissions:
 
 jobs:
   deploy:
+    name: Build image
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout out code
         uses: actions/checkout@v4
 
       - name: Install kubectl
@@ -27,11 +28,9 @@ jobs:
         id: aws-creds
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::621486623993:role/github-actions-ecr-role
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
-
-      - name: Show AWS identity
-        run: aws sts get-caller-identity
 
       - name: Load secrets and save to app.env
         run: aws secretsmanager get-secret-value --secret-id simple_bank --query SecretString --output text | jq -r 'to_entries|map("\(.key)=\(.value)")|.[]' > app.env
@@ -59,32 +58,6 @@ jobs:
         run: |
           mkdir -p $HOME/.kube
           aws eks update-kubeconfig --name simple-cluster --region eu-north-1 --kubeconfig $HOME/.kube/config
-
-      - name: Inspect generated kubeconfig
-        run: cat $HOME/.kube/config
-
-      - name: Test aws eks get-token manually
-        run: |
-          aws eks get-token --cluster-name simple-cluster --region eu-north-1
-        env:
-          AWS_REGION: eu-north-1
-          AWS_DEFAULT_REGION: eu-north-1
-          AWS_ACCESS_KEY_ID: ${{ steps.aws-creds.outputs.aws-access-key-id }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.aws-creds.outputs.aws-secret-access-key }}
-          AWS_SESSION_TOKEN: ${{ steps.aws-creds.outputs.aws-session-token }}
-
-      - name: Debug kubeconfig
-        run: |
-          echo "=== kubectl config view ==="
-          kubectl config view
-          echo "=== kubectl get nodes ==="
-          kubectl get nodes || echo "Could not access cluster"
-        env:
-          AWS_REGION: eu-north-1
-          AWS_DEFAULT_REGION: eu-north-1
-          AWS_ACCESS_KEY_ID: ${{ steps.aws-creds.outputs.aws-access-key-id }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.aws-creds.outputs.aws-secret-access-key }}
-          AWS_SESSION_TOKEN: ${{ steps.aws-creds.outputs.aws-session-token }}
 
       - name: Deploy image to Amazon EKS
         env:
