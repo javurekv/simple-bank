@@ -51,14 +51,8 @@ jobs:
         run: aws eks update-kubeconfig --name simple-cluster --region eu-north-1
 
       - name: Deploy image to Amazon EKS
-        env:
-          AWS_REGION: eu-north-1
-          AWS_DEFAULT_REGION: eu-north-1
-          AWS_ACCESS_KEY_ID: ${{ steps.aws-creds.outputs.aws-access-key-id }}
-          AWS_SECRET_ACCESS_KEY: ${{ steps.aws-creds.outputs.aws-secret-access-key }}
-          AWS_SESSION_TOKEN: ${{ steps.aws-creds.outputs.aws-session-token }}
         run: |
-          kubectl apply --kubeconfig $HOME/.kube/config -f eks/aws-auth.yaml
+          kubectl apply -f eks/aws-auth.yaml
           kubectl apply -f eks/deployment.yaml
           kubectl apply -f eks/service.yaml
           kubectl apply -f eks/issuer.yaml
