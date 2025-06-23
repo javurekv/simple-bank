@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/simple_bank</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="postgres@simple-bank.c9mimg8mqt7h.eu-north-1.rds.amazonaws.com" uuid="318ba941-4400-4753-a3c1-63ae91d23e6f">
+    <data-source source="LOCAL" name="AWS" uuid="59951995-e764-469b-8810-8024c0579a2d">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://simple-bank.c9mimg8mqt7h.eu-north-1.rds.amazonaws.com:5432/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://simple-bank.c9mimg8mqt7h.eu-north-1.rds.amazonaws.com:5432/simple_bank</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
