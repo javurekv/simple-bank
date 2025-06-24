@@ -1,3 +1,4 @@
+DB_URL = postgres://root:secret@localhost:5432/simple_bank?sslmode=disable
 SQLC := /Users/vitaliiiavurek/go/bin/sqlc
 MOCKGEN = /Users/vitaliiiavurek/go/bin/mockgen
 
@@ -15,19 +16,27 @@ dropdb:
 
 .PHONY: migrate
 migrate:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" up
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "$(DB_URL)" up
 
 .PHONY: migrate1
 migrate1:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" up 1
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "$(DB_URL)" up 1
 
 .PHONY: rollback
 rollback:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" down
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "$(DB_URL)" down
 
 .PHONY: rollback1
 rollback1:
-	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "postgres://root:secret@localhost:5432/simple_bank?sslmode=disable" down 1
+	go run -tags 'postgres' github.com/golang-migrate/migrate/v4/cli@v4.17.0 -path ./db/migration -database "$(DB_URL)" down 1
+
+.PHONY: dbdocs
+dbdocs:
+	dbdocs build doc/db.dbml
+
+.PHONY: dbschema
+dbschema:
+	dbml2sql --postgres -o doc/schema.sql doc/bd.dbml
 
 .PHONY: sqlc
 sqlc:
@@ -44,3 +53,4 @@ server:
 .PHONY: mock
 mock:
 	$(MOCKGEN) -package mockdb -destination=db/mock/mock_store.go simple_bank.sqlc.dev/app/db/sqlc Store
+
