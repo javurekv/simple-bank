@@ -9,7 +9,6 @@ package pb
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	_ "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -25,7 +24,7 @@ var File_service_simple_bank_proto protoreflect.FileDescriptor
 
 const file_service_simple_bank_proto_rawDesc = "" +
 	"\n" +
-	"\x19service_simple_bank.proto\x12\x02pb\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto2\x87\x01\n" +
+	"\x19service_simple_bank.proto\x12\x02pb\x1a\x15rpc_create_user.proto\x1a\x14rpc_login_user.proto2\x87\x01\n" +
 	"\n" +
 	"SimpleBank\x12=\n" +
 	"\n" +
