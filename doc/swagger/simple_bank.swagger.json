@@ -1,8 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "rpc_create_user.proto",
-    "version": "version not set"
+    "title": "Simple bank API",
+    "version": "1.0",
+    "contact": {
+      "name": "Personal",
+      "url": "https://github.com/javurekv/simple-bank",
+      "email": "javurek.vitaliy@gmail.com"
+    }
   },
   "tags": [
     {
