@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/jackc/pgx/v5/pgxpool"
-	_ "github.com/javurekv/simple-bank/doc/statik"
 	"github.com/rakyll/statik/fs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -14,6 +13,7 @@ import (
 	"net/http"
 	"simple_bank.sqlc.dev/app/api"
 	db "simple_bank.sqlc.dev/app/db/sqlc"
+	_ "simple_bank.sqlc.dev/app/doc/statik"
 	"simple_bank.sqlc.dev/app/gapi"
 	"simple_bank.sqlc.dev/app/pb"
 	"simple_bank.sqlc.dev/app/util"
@@ -89,9 +89,7 @@ func runGatewayServer(config util.Config, store db.Store) {
 	if err != nil {
 		log.Fatal("cannot create static files:", err)
 	}
-
-	swaggerHandler := http.FileServer(staticFS)
-
+	swaggerHandler := http.StripPrefix("/swagger/", http.FileServer(staticFS))
 	mux.Handle("/swagger/", swaggerHandler)
 
 	listener, err := net.Listen("tcp", config.HTTPServerAddress)
