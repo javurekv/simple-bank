@@ -1,8 +1,14 @@
 package worker
 
 import (
+	"context"
 	"github.com/hibiken/asynq"
 	db "simple_bank.sqlc.dev/app/db/sqlc"
+)
+
+const (
+	QueueCritical = "critical"
+	QueueDefault  = "default"
 )
 
 type TaskProcessor interface {
@@ -18,7 +24,12 @@ type RedisTaskProcessor struct {
 func NewRedisTaskProcessor(redisOpt asynq.RedisClientOpt, store db.Store) TaskProcessor {
 	server := asynq.NewServer(
 		redisOpt,
-		asynq.Config{},
+		asynq.Config{
+			Queues: map[string]int{
+				QueueCritical: 10,
+				QueueDefault:  5,
+			},
+		},
 	)
 
 	return &RedisTaskProcessor{

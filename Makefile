@@ -69,3 +69,7 @@ proto:
 .PHONY: evans
 evans:
 	evans --host localhost --port 9090 -r relp
+
+redis:
+	docker run --name redis -p 6379:6379 -d redis:8.2.1-alpine
+.PHONY: redis
